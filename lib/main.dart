@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hellokorean/config/appConfig.dart';
-import 'package:hellokorean/views/login/login_page.dart';
+import 'package:hellokorean/config/routes.dart';
+import 'package:hellokorean/config/size_config.dart';
 import 'package:hellokorean/views/sign_in/sign_in_screen.dart';
 
 void main() async {
@@ -19,14 +20,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: AppConfig.userLogined ? MyHomePage(title: 'Hello Korean') : SignInScreen()
+      home: AppConfig.userLogined ? MyHomePage(title: 'Hello Korean') : SignInScreen(),
+      initialRoute: AppConfig.userLogined ? MyHomePage.routeName : SignInScreen.routeName,
+      routes: routes,
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
+  static String routeName = "/sign_in";
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -40,6 +43,7 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //

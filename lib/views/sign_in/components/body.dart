@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hellokorean/components/no_account_text.dart';
 import 'package:hellokorean/config/size_config.dart';
 import 'sign_form.dart';
@@ -15,9 +16,20 @@ class Body extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: SizeConfig.screenHeight * 0.04),
+                SizedBox(height: 30,),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(1000.0),
+                  child: Image.asset(
+                    'assets/gif/hanbok.gif',
+                    width: 180.0,
+                    height: 180.0,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(height: 30,),
+//                SizedBox(height: SizeConfig.screenHeight * 0.04),
                 Text(
-                  "환영합니다.",
+                  "안녕하세요!",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: getProportionateScreenWidth(28),
@@ -25,12 +37,11 @@ class Body extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "광고 보고 기부하는 돈다입니다. \n아이디와 비밀번호를 입력하세요",
+                  "Welcome to HelloKorean!\nYou can learn about korean",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                SizedBox(height: getProportionateScreenHeight(20)),
                 SignForm(),
-                SizedBox(height: SizeConfig.screenHeight * 0.08),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
                 //   children: [
