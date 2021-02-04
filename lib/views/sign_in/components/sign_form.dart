@@ -75,7 +75,7 @@ class _SignFormState extends State<SignForm> {
                 onTap: () => Navigator.pushNamed(
                     context, ForgotPasswordScreen.routeName),
                 child: Text(
-                  "아이디 찾기",
+                  "Find ID",
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),
               ),
@@ -84,7 +84,7 @@ class _SignFormState extends State<SignForm> {
                 onTap: () => Navigator.pushNamed(
                     context, ForgotPasswordScreen.routeName),
                 child: Text(
-                  "비밀번호 찾기",
+                  "Reset Password",
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),
               )
@@ -93,7 +93,7 @@ class _SignFormState extends State<SignForm> {
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
-            text: "로그인",
+            text: "Login",
             press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
@@ -183,7 +183,7 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "Password",
-        hintText: "비밀번호를 입력해주세요.",
+        hintText: "Input your password.",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -218,7 +218,7 @@ class _SignFormState extends State<SignForm> {
       },
       decoration: InputDecoration(
         labelText: "ID",
-        hintText: "아이디를 입력해주세요.",
+        hintText: "Input your ID",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
