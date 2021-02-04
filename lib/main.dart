@@ -1,0 +1,79 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:hellokorean/config/appConfig.dart';
+import 'package:hellokorean/views/login/login_page.dart';
+import 'package:hellokorean/views/sign_in/sign_in_screen.dart';
+
+void main() async {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'HelloKorean',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: AppConfig.userLogined ? MyHomePage(title: 'Hello Korean') : SignInScreen()
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+    return Scaffold(
+      appBar: Platform.isIOS || Platform.isMacOS
+          ? CupertinoNavigationBar(
+              middle: Text(title),
+            )
+          : AppBar(
+              centerTitle: true,
+
+              title: Text(title),
+            ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              "Provider.of<Users>(context).id.toString()",
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton:FloatingActionButton(
+          onPressed: (){},
+          tooltip: 'Increment',
+          child: Icon(Icons.add)) // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
