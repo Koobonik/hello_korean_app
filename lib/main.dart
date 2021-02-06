@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hellokorean/config/appConfig.dart';
@@ -57,7 +56,6 @@ class MyHomePage extends StatelessWidget {
             )
           : AppBar(
               centerTitle: true,
-
               title: Text(title),
             ),
       body: Center(
