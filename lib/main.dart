@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hellokorean/config/appConfig.dart';
 import 'package:hellokorean/config/routes.dart';
 import 'package:hellokorean/config/size_config.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'HelloKorean',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -69,6 +70,11 @@ class MyHomePage extends StatelessWidget {
               "Provider.of<Users>(context).id.toString()",
               style: Theme.of(context).textTheme.headline4,
             ),
+            RaisedButton(
+              child: Text("hihi"),
+                onPressed: (){
+
+            })
           ],
         ),
       ),
