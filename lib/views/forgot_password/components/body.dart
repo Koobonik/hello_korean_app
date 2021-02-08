@@ -4,7 +4,8 @@ import 'package:hellokorean/components/default_button.dart';
 import 'package:hellokorean/components/form_error.dart';
 import 'package:hellokorean/components/no_account_text.dart';
 import 'package:hellokorean/config/size_config.dart';
-import 'file:///D:/code/hello_korean_app/lib/config/constants.dart';
+
+import '../../../config/constants.dart';
 
 
 class Body extends StatelessWidget {

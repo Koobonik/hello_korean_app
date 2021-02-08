@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'file:///D:/code/hello_korean_app/lib/config/appConfig.dart';
+import '../config/appConfig.dart';
 
 
 

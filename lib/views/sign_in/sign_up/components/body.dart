@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hellokorean/config/size_config.dart';
-import 'file:///D:/code/hello_korean_app/lib/config/constants.dart';
 
+import '../../../../config/constants.dart';
 import 'sign_up_form.dart';
 
 class Body extends StatelessWidget {
