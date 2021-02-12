@@ -40,7 +40,7 @@ class Body extends StatelessWidget {
                   "Welcome to HelloKorean!\nYou can learn about korean",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: getProportionateScreenHeight(20)),
+                SizedBox(height: getProportionateScreenHeight(10)),
                 SignForm(),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
