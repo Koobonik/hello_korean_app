@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:hellokorean/components/custom_surfix_icon.dart';
 import 'package:hellokorean/components/default_button.dart';
@@ -28,8 +27,10 @@ class _SignUpFormState extends State<SignUpForm> {
   bool remember = true;
 
   // 검증 체크.
-  bool _emailDone = false;
-  bool _nicknameDone = false;
+  bool _emailButton = false;
+  bool _sendEmailDone = false;
+  bool _emailConfirmDone = false;
+  bool _otherArea = false;
   final List<String> errors = [];
 
   void addError({String error}) {
@@ -46,6 +47,20 @@ class _SignUpFormState extends State<SignUpForm> {
       });
   }
 
+  sendCode(value) {
+    print(value);
+    setState(() {
+      // 서버에 이메일 보내는 무언가의 요청을 해야함.
+      _sendEmailDone = true;
+
+      // 인증코드 입력하는 텍스트 폼이 나와야 함.
+      // 이메일이
+      _otherArea = true;
+
+    });
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -53,24 +68,48 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Column(
         children: [
           buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildConformPassFormField(),
-          SizedBox(height: getProportionateScreenHeight(10)),
-
-          SizedBox(height: getProportionateScreenHeight(10)),
-          buildNickNameFormField(),
-          FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(20)),
+          _emailButton
+              ? Padding(
+                  padding:
+                      EdgeInsets.only(top: getProportionateScreenHeight(10)),
+                  child: DefaultButton(
+                    text: "send code",
+                    press: () {
+                      sendCode(email);
+                    },
+                  ),
+                )
+              : Container(),
+          _otherArea
+              ? Column(
+                  children: [
+                    SizedBox(height: getProportionateScreenHeight(10)),
+                    buildPasswordFormField(),
+                    SizedBox(height: getProportionateScreenHeight(10)),
+                    buildConformPassFormField(),
+                    SizedBox(height: getProportionateScreenHeight(10)),
+                    SizedBox(height: getProportionateScreenHeight(10)),
+                    buildNickNameFormField(),
+                    FormError(errors: errors),
+                    SizedBox(height: getProportionateScreenHeight(20)),
+                  ],
+                )
+              : Container(),
           DefaultButton(
             text: "Try Join!",
             press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 print("값 유효?" + email);
-                SignUpDto signUpDto = SignUpDto(userId, conform_password, nickName, email, "FirebaseController.firebaseToken", "hello");
-                String token = await HttpController.sendRequest("signUp", signUpDto.toJson());
+                SignUpDto signUpDto = SignUpDto(
+                    userId,
+                    conform_password,
+                    nickName,
+                    email,
+                    "FirebaseController.firebaseToken",
+                    "hello");
+                String token = await HttpController.sendRequest(
+                    "signUp", signUpDto.toJson());
                 if (token != "") {
                   Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
                   // Now you can use your decoded token
@@ -115,6 +154,7 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
+  // 비밀번호 체크
   TextFormField buildConformPassFormField() {
     return TextFormField(
       obscureText: true,
@@ -148,6 +188,7 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
+  // 비밀번호 입력
   TextFormField buildPasswordFormField() {
     return TextFormField(
       obscureText: true,
@@ -181,16 +222,31 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
+  // 이메일 체크
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
+        print(emailValidatorRegExp.hasMatch(value));
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
+        if (emailValidatorRegExp.hasMatch(value)) {
+          print("일치함");
+          setState(() {
+            _emailButton = true;
+            email = value;
+          });
+        } else {
+          print("일치하지 않음");
+          setState(() {
+            _emailButton = false;
+          });
+        }
+
         return null;
       },
       validator: (value) {
@@ -213,6 +269,39 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
+
+
+  // 이메일 인증코드
+  TextFormField buildEmailFormConfirmField() {
+    return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      onSaved: (newValue) => email = newValue,
+      onChanged: (value) {
+
+
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kEmailNullError);
+          return "";
+        } else if (!emailValidatorRegExp.hasMatch(value)) {
+          addError(error: kInvalidEmailError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "E-mail",
+        hintText: "Please input your E-mail",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+      ),
+    );
+  }
+
   TextFormField buildNickNameFormField() {
     return TextFormField(
       keyboardType: TextInputType.text,
@@ -269,6 +358,3 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
-
-
-
