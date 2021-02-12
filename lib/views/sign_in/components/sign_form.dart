@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/snackbar/snack.dart';
 import 'package:hellokorean/components/custom_surfix_icon.dart';
 import 'package:hellokorean/components/default_button.dart';
 import 'package:hellokorean/components/form_error.dart';
@@ -44,9 +46,9 @@ class _SignFormState extends State<SignForm> {
       child: Column(
         children: [
           buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(16)),
           buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(16)),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -154,6 +156,7 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
+  // 비밀번호 검증 필드
   TextFormField buildPasswordFormField() {
     return TextFormField(
       obscureText: true,
@@ -175,7 +178,8 @@ class _SignFormState extends State<SignForm> {
           final snackbar = SnackBar(
             content: Text('비밀번호는 8자리 이상 입력해주세요!'),
           );
-          Scaffold.of(context).showSnackBar(snackbar);
+//          Scaffold.of(context).showSnackBar(snackbar);
+          Get.snackbar("Hello Korean", "Please input password more than 8 character", snackPosition: SnackPosition.BOTTOM);
           addError(error: kShortPassError);
           return "";
         }
@@ -192,6 +196,7 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
+  // 이메일 입력 필드
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
@@ -210,10 +215,10 @@ class _SignFormState extends State<SignForm> {
           addError(error: kUserIdNullError);
           return "";
         }
-        /*else if (!emailValidatorRegExp.hasMatch(value)) {
+        else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
           return "";
-        }*/
+        }
         return null;
       },
       decoration: InputDecoration(
