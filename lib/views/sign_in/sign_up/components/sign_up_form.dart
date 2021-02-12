@@ -65,7 +65,7 @@ class _SignUpFormState extends State<SignUpForm> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 print("값 유효?" + email);
-                SignUpDto signUpDto = SignUpDto(userId, conform_password, nickName, email, FirebaseController.firebaseToken, "hello");
+                SignUpDto signUpDto = SignUpDto(userId, conform_password, nickName, email, "FirebaseController.firebaseToken", "hello");
                 String token = await HttpController.sendRequest("signUp", signUpDto.toJson());
                 if (token != "") {
                   Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
