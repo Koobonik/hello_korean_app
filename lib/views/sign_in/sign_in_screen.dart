@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hellokorean/config/colors.dart';
 import 'package:hellokorean/config/size_config.dart';
 import 'components/body.dart';
 
@@ -9,6 +10,7 @@ class SignInScreen extends StatelessWidget {
     SizeConfig().init(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red,
         title: Text("Login"),
       ),
       body: Body(),
