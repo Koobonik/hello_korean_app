@@ -26,6 +26,10 @@ class _SignUpFormState extends State<SignUpForm> {
   String nickName;
   String userId;
   bool remember = true;
+
+  // 검증 체크.
+  bool _emailDone = false;
+  bool _nicknameDone = false;
   final List<String> errors = [];
 
   void addError({String error}) {
@@ -48,19 +52,19 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
-          buildUserIDFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildConformPassFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
           buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          buildPasswordFormField(),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          buildConformPassFormField(),
+          SizedBox(height: getProportionateScreenHeight(10)),
+
+          SizedBox(height: getProportionateScreenHeight(10)),
           buildNickNameFormField(),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(40)),
+          SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
-            text: "회원가입",
+            text: "Try Join!",
             press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
@@ -134,8 +138,8 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "비밀번호 확인",
-        hintText: "다시 비밀번호를 입력하세요.",
+        labelText: "password",
+        hintText: "Please check your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -167,8 +171,8 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "비밀번호",
-        hintText: "비밀번호를 입력하세요.",
+        labelText: "Password",
+        hintText: "Please input your password",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -200,8 +204,8 @@ class _SignUpFormState extends State<SignUpForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "이메일",
-        hintText: "이메일을 입력하세요.",
+        labelText: "E-mail",
+        hintText: "Please input your E-mail",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

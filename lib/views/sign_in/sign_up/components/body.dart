@@ -17,12 +17,11 @@ class Body extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight * 0.04), // 4%
-                Text("회원가입", style: headingStyle),
                 Text(
-                  "돈다는 기부플랫폼 입니다.\n광고를 보며 나온 수익금을 기부할 수 있습니다.",
+                  "Please input your information",
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: SizeConfig.screenHeight * 0.05),
+                SizedBox(height: getProportionateScreenHeight(10)),
                 SignUpForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.05),
                 // Row(
