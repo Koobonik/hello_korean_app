@@ -80,6 +80,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                 )
               : Container(),
+          Container(height: getProportionateScreenHeight(10),),
           _otherArea
               ? Column(
                   children: [
