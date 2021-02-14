@@ -10,6 +10,8 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
+const kAppBarColor = Colors.red;
+const kButtonColor = Colors.blue;
 
 const kAnimationDuration = Duration(milliseconds: 200);
 
