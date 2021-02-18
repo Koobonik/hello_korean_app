@@ -39,6 +39,7 @@ dependencies:
 #  firebase_core:
 #  firebase_storage: ^2.1.0+1
   get: ^3.24.0
+  validated: ^1.0.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
