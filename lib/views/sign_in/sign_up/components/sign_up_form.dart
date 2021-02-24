@@ -20,8 +20,9 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   String email;
+  String receivedCode;
   String password;
-  String conform_password;
+  String conformPassword;
   String nickName;
   String userId;
   bool remember = true;
@@ -80,6 +81,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       text: "send code",
                       press: () {
                         sendCode(email);
+
                       },
                     ),
                   )
@@ -119,7 +121,7 @@ class _SignUpFormState extends State<SignUpForm> {
           print("값 유효?" + email);
           SignUpDto signUpDto = SignUpDto(
               userId,
-              conform_password,
+              conformPassword,
               nickName,
               email,
               "FirebaseController.firebaseToken",
@@ -167,75 +169,7 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  // 비밀번호 체크
-  TextFormField buildConformPassFormField() {
-    return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => conform_password = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conform_password) {
-          removeError(error: kMatchPassError);
-        }
-        conform_password = value;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
-        } else if ((password != value)) {
-          addError(error: kMatchPassError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "password",
-        hintText: "Please check your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-      ),
-    );
-  }
-
-  // 비밀번호 입력
-  TextFormField buildPasswordFormField() {
-    return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => password = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 9) {
-          removeError(error: kShortPassError);
-        }
-        password = value;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Password",
-        hintText: "Please input your password",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-      ),
-    );
-  }
-
-  // 이메일 체크
+  // 이메일 REX 체크
   TextFormField buildEmailFormField() {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
@@ -283,6 +217,107 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
+  // 받은 이메일 코드
+  TextFormField buildEmailAuthCodeFormField() {
+    return TextFormField(
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => nickName = newValue,
+      onChanged: (value) {
+        if (value.length >= 6) {
+          removeError(error: kEmailCodeError);
+          return "";
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty || value.length < 6) {
+          addError(error: kEmailCodeError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Received code",
+        hintText: "Please input received code",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
+      ),
+    );
+  }
+
+  // 비밀번호 입력
+  TextFormField buildPasswordFormField() {
+    return TextFormField(
+      obscureText: true,
+      onSaved: (newValue) => password = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value.length > 8) {
+          print("에러 제거");
+          removeError(error: kShortPassError);
+        }
+        password = value;
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kPassNullError);
+          return "";
+        } else if (value.length < 8) {
+          print("에러 추가");
+          addError(error: kShortPassError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Password",
+        hintText: "Please input your password",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+      ),
+    );
+  }
+
+  // 비밀번호 체크
+  TextFormField buildConformPassFormField() {
+    return TextFormField(
+      obscureText: true,
+      onSaved: (newValue) => conformPassword = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value.isNotEmpty && password == conformPassword) {
+          removeError(error: kMatchPassError);
+        }
+        conformPassword = value;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kPassNullError);
+          return "";
+        } else if ((password != value)) {
+          addError(error: kMatchPassError);
+          return "";
+        }
+        removeError(error: kMatchPassError);
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "password",
+        hintText: "Please check your password",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
+      ),
+    );
+  }
 
   // 이메일 인증코드
   TextFormField buildEmailFormConfirmField() {
@@ -296,7 +331,7 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kEmailNullError);
+          addError(error: kEmailCodeError);
           return "";
         } else if (!emailValidatorRegExp.hasMatch(value)) {
           addError(error: kInvalidEmailError);
@@ -307,34 +342,6 @@ class _SignUpFormState extends State<SignUpForm> {
       decoration: InputDecoration(
         labelText: "E-mail",
         hintText: "Please input your E-mail",
-        // If  you are using latest version of flutter then lable text and hint text shown like this
-        // if you r using flutter less then 1.20.* then maybe this is not working properly
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
-      ),
-    );
-  }
-
-  TextFormField buildEmailAuthCodeFormField() {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      onSaved: (newValue) => nickName = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kNickNameNullError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kNickNameNullError);
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Recevied code",
-        hintText: "Please input recevied code",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -356,6 +363,10 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) {
         if (value.isEmpty) {
           addError(error: kNickNameNullError);
+          return "";
+        }
+        else if(value.length < 4){
+          addError(error: kNickNameShortError);
           return "";
         }
         return null;

@@ -26,9 +26,11 @@ final headingStyle = TextStyle(
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 const String kEmailNullError = "Please Enter your email";
+const String kEmailCodeError = "Please Input email code";
 const String kUserIdNullError = "Please Enter your ID";
 const String kInvalidEmailError = "Please Enter Valid Email";
 const String kNickNameNullError = "Please Enter your NickName";
+const String kNickNameShortError = "Please Input over 4 char";
 const String kPassNullError = "Please Enter your password";
 const String kShortPassError = "Password is too short";
 const String kMatchPassError = "Passwords don't match";

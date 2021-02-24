@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hellokorean/config/constants.dart';
 import 'package:hellokorean/config/size_config.dart';
 
+import 'font_style.dart';
+
 
 class DefaultButton extends StatelessWidget {
   const DefaultButton({
@@ -23,10 +25,7 @@ class DefaultButton extends StatelessWidget {
         onPressed: press != null ? press : null,
         child: Text(
           text,
-          style: TextStyle(
-            fontSize: getProportionateScreenWidth(18),
-            color: Colors.white,
-          ),
+          style: MTextStyle.bold20white
         ),
       ),
     );

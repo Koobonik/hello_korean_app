@@ -22,11 +22,14 @@ class NoAccountText extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, SignUpScreen.routeName),
-            child: Text(
-              "Join Us!",
-              style: TextStyle(
-                  fontSize: getProportionateScreenWidth(16),
-                  color: kPrimaryColor),
+            child: Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "Join Us!",
+                style: TextStyle(
+                    fontSize: getProportionateScreenWidth(16),
+                    color: kPrimaryColor),
+              ),
             ),
           ),
 
@@ -42,11 +45,14 @@ class NoAccountText extends StatelessWidget {
           GestureDetector(
             onTap: () => Get.to(SignUpScreen()),
 //                Navigator.pushNamed(context, SignUpScreen.routeName),
-            child: Text(
-              "회원가입 하기",
-              style: TextStyle(
-                  fontSize: getProportionateScreenWidth(16),
-                  color: kPrimaryColor),
+            child: Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "회원가입 하기",
+                style: TextStyle(
+                    fontSize: getProportionateScreenWidth(16),
+                    color: kPrimaryColor),
+              ),
             ),
           ),
         ],
