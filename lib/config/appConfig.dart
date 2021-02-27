@@ -27,9 +27,6 @@ class AppConfig {
       prefs.setString('userToken', users.userToken);
       prefs.setString('userFirebaseToken', users.userFirebaseToken);
       prefs.setString('userImageUrl', users.userImageUrl);
-      prefs.setInt("seeAdTime", users.seeAdTime);
-      prefs.setInt("seeAdMoney", users.seeAdMoney);
-      prefs.setInt("money", users.money);
 
       prefs.setBool('userLogined', true);
     }
@@ -57,9 +54,6 @@ class AppConfig {
     prefs.setString('userNickName', null);
     prefs.setString('userFirebaseToken', null);
     prefs.setString('userImageUrl', null);
-    prefs.setInt("seeAdTime", null);
-    prefs.setInt("seeAdMoney", null);
-    prefs.setInt("money", null);
 
     prefs.setBool('userLogined', false);
     AppConfig.userLogined = false;
@@ -80,9 +74,6 @@ class AppConfig {
     prefs.setString('userNickName', null);
     prefs.setString('userFirebaseToken', null);
     prefs.setString('userImageUrl', null);
-    prefs.setInt("seeAdTime", null);
-    prefs.setInt("seeAdMoney", null);
-    prefs.setInt("money", null);
 
     prefs.setBool('userLogined', false);
     AppConfig.userLogined = false;
