@@ -13,14 +13,49 @@ class HttpController {
     //Map map = { "userName" : name , "list" : order, "sum_cost" : money, "num" : nums};
     HttpClientRequest request = await client.postUrl(Uri.parse(AppConfig.baseUrl+url));
     request.headers.set('content-type', 'application/json');
-    request.headers.set("JWT", AppConfig.users.userToken);
+    if(AppConfig.users.userToken != null){
+      request.headers.set("JWT", AppConfig.users.userToken);
+    }
     request.add(utf8.encode(json.encode(map)));
     print("map : " + map.toString());
     HttpClientResponse response = await request.close();
-    String reply = await response.transform(utf8.decoder).join();
-    print("Response : " + reply);
-    return reply;
+    String reply = "";
+    if(response.statusCode == 200){
+      reply = await response.transform(utf8.decoder).join();
+      print("Response : " + reply);
+      return reply;
+    }
+    else if(response.statusCode == 409) {
+      reply = await response.transform(utf8.decoder).join();
+      print(reply);
+      DefaultResponse defaultResponse = DefaultResponse.fromMap(reply);
+      return defaultResponse;
+    }
+
   }
 
+
+}
+class DefaultResponse {
+  int code;
+  String message;
+
+
+  DefaultResponse({this.code, this.message});
+
+  Map<String, dynamic> toMap() {
+    return {'code': code, 'message': message,};
+  }
+
+  factory DefaultResponse.fromMap(dynamic map) {
+    if (null == map) return null;
+    var temp;
+    return DefaultResponse(
+      code: null == (temp = map['code']) ? null : (temp is num
+          ? temp.toInt()
+          : int.tryParse(temp)),
+      message: map['message']?.toString(),
+    );
+  }
 
 }
