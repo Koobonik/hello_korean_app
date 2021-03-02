@@ -13,24 +13,26 @@ class HttpController {
     //Map map = { "userName" : name , "list" : order, "sum_cost" : money, "num" : nums};
     HttpClientRequest request = await client.postUrl(Uri.parse(AppConfig.getHostUrl()+url));
     request.headers.set('content-type', 'application/json');
-    if(AppConfig.users.userToken != null){
-      request.headers.set("JWT", AppConfig.users.userToken);
-    }
+    // if(AppConfig.users.userToken != null){
+    //   request.headers.set("JWT", AppConfig.users.userToken);
+    // }
     request.add(utf8.encode(json.encode(map)));
     print("map : " + map.toString());
     HttpClientResponse response = await request.close();
-    String reply = "";
-    if(response.statusCode == 200){
-      reply = await response.transform(utf8.decoder).join();
-      print("Response : " + reply);
-      return reply;
-    }
-    else if(response.statusCode == 409) {
-      reply = await response.transform(utf8.decoder).join();
-      print(reply);
-      DefaultResponse defaultResponse = DefaultResponse.fromMap(reply);
-      return defaultResponse;
-    }
+    String reply = await response.transform(utf8.decoder).join();
+    print(reply);
+    return response;
+    // if(response.statusCode == 200){
+    //   reply = await response.transform(utf8.decoder).join();
+    //   print("Response : " + reply);
+    //   return reply;
+    // }
+    // else if(response.statusCode == 409) {
+    //   reply = await response.transform(utf8.decoder).join();
+    //   print(reply);
+    //   DefaultResponse defaultResponse = DefaultResponse.fromMap(reply);
+    //   return defaultResponse;
+    // }
 
   }
 

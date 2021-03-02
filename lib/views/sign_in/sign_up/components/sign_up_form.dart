@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hellokorean/api/signup/sign_up.dart';
 import 'package:hellokorean/components/custom_surfix_icon.dart';
 import 'package:hellokorean/components/default_button.dart';
 import 'package:hellokorean/components/form_error.dart';
@@ -48,16 +49,20 @@ class _SignUpFormState extends State<SignUpForm> {
       });
   }
 
-  sendCode(value) {
-    print(value);
+  sendCode(email) {
     setState(() {
-      // 서버에 이메일 보내는 무언가의 요청을 해야함.
-      _sendEmailDone = false;
-      // 인증코드 입력하는 텍스트 폼이 나와야 함.
+      SignUp().requestEmailCode(Recipient(email).toMap()).then((value) {
+        print(value);
+        if(value == true){
+          // 서버에 이메일 보내는 무언가의 요청을 해야함.
+          _sendEmailDone = false;
+          // 인증코드 입력하는 텍스트 폼이 나와야 함.
 
+          // 이메일이
+          _otherArea = true;
+        }
+      });
 
-      // 이메일이
-      _otherArea = true;
 
     });
     return;
@@ -69,27 +74,28 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _formKey,
       child: Column(
         children: [
-          _sendEmailDone ?
-              Column(
-                children: [
-                  buildEmailFormField(),
-                  _emailValid
-                      ? Padding(
-                    padding:
-                    EdgeInsets.only(top: getProportionateScreenHeight(10)),
-                    child: DefaultButton(
-                      text: "send code",
-                      press: () {
-                        sendCode(email);
-
-                      },
-                    ),
-                  )
-                      : Container(),
-                ],
-              ): Container(),
-
-          Container(height: getProportionateScreenHeight(10),),
+          _sendEmailDone
+              ? Column(
+                  children: [
+                    buildEmailFormField(),
+                    _emailValid
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: getProportionateScreenHeight(10)),
+                            child: DefaultButton(
+                              text: "send code",
+                              press: () {
+                                sendCode(email);
+                              },
+                            ),
+                          )
+                        : Container(),
+                  ],
+                )
+              : Container(),
+          Container(
+            height: getProportionateScreenHeight(10),
+          ),
           _otherArea
               ? Column(
                   children: [
@@ -112,22 +118,17 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  DefaultButton defaultButton(){
+  DefaultButton defaultButton() {
     return DefaultButton(
       text: "Try Join!",
       press: () async {
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
           print("값 유효?" + email);
-          SignUpDto signUpDto = SignUpDto(
-              userId,
-              conformPassword,
-              nickName,
-              email,
-              "FirebaseController.firebaseToken",
-              "hello");
-          String token = await HttpController.sendRequest(
-              "signUp", signUpDto.toJson());
+          SignUpDto signUpDto = SignUpDto(userId, conformPassword, nickName,
+              email, "FirebaseController.firebaseToken", "hello");
+          String token =
+              await HttpController.sendRequest("signUp", signUpDto.toJson());
           if (token != "") {
             Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
             // Now you can use your decoded token
@@ -150,7 +151,10 @@ class _SignUpFormState extends State<SignUpForm> {
             DateTime expirationDate = JwtDecoder.getExpirationDate(token);
             print(expirationDate);
             AppConfig.users = Users(
-                userToken: token, userNickName: decodedToken["userNickName"], userFirebaseToken: decodedToken["userFirebaseToken"], userImageUrl: decodedToken["userImageUrl"]);
+                userToken: token,
+                userNickName: decodedToken["userNickName"],
+                userFirebaseToken: decodedToken["userFirebaseToken"],
+                userImageUrl: decodedToken["userImageUrl"]);
             AppConfig.userLogin(AppConfig.users, remember);
             print(AppConfig.users.userNickName);
 //                  Navigator.pushNamed(context, HomeScreen.routeName);
@@ -319,8 +323,6 @@ class _SignUpFormState extends State<SignUpForm> {
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-
-
         return null;
       },
       validator: (value) {
@@ -358,8 +360,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isEmpty) {
           addError(error: kNickNameNullError);
           return "";
-        }
-        else if(value.length < 4){
+        } else if (value.length < 4) {
           addError(error: kNickNameShortError);
           return "";
         }
