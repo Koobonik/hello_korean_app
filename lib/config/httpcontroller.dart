@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../config/appConfig.dart';
+import 'appConfig.dart';
 
 
 
@@ -11,7 +11,7 @@ class HttpController {
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
     //String url ='https://cafecostes.com/flutter/saveShopping';
     //Map map = { "userName" : name , "list" : order, "sum_cost" : money, "num" : nums};
-    HttpClientRequest request = await client.postUrl(Uri.parse(AppConfig.baseUrl+url));
+    HttpClientRequest request = await client.postUrl(Uri.parse(AppConfig.getHostUrl()+url));
     request.headers.set('content-type', 'application/json');
     if(AppConfig.users.userToken != null){
       request.headers.set("JWT", AppConfig.users.userToken);
