@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hellokorean/config/appConfig.dart';
 import 'package:hellokorean/models/Users.dart';
-import 'package:hellokorean/utils/httpcontroller.dart';
+import 'package:hellokorean/config/httpcontroller.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:toast/toast.dart';
 class FindIDPage extends StatelessWidget {
@@ -112,7 +112,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 );
                 pr.show();
                 Users users = null;//Users(null, null, bodyController.text, null, titleController.text, null, null, null, null, null, null, null, null);
-                var map = jsonEncode(users.toJson());
+                var map = jsonEncode(users.toMap());
                 Map map2 = {"map" : map.toString()};
                 Map map3 = jsonDecode(map2['map']);
                 String response = await HttpController.sendRequest("/findLoginId", map3);

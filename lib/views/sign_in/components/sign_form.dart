@@ -9,7 +9,7 @@ import 'package:hellokorean/config/appConfig.dart';
 import 'package:hellokorean/config/constants.dart';
 import 'package:hellokorean/config/size_config.dart';
 import 'package:hellokorean/models/Users.dart';
-import 'package:hellokorean/utils/httpcontroller.dart';
+import 'package:hellokorean/config/httpcontroller.dart';
 import 'package:hellokorean/views/forgot_password/forgot_password_screen.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -127,13 +127,7 @@ class _SignFormState extends State<SignForm> {
                   DateTime expirationDate = JwtDecoder.getExpirationDate(token);
                   print(expirationDate);
                   AppConfig.users = Users(
-                      token,
-                      decodedToken["userNickName"],
-                      decodedToken["userFirebaseToken"],
-                      decodedToken["userImageUrl"],
-                      decodedToken['seeAdTime'],
-                      decodedToken['seeAdMoney'],
-                      decodedToken['money']);
+                      userToken: token, userNickName: decodedToken["userNickName"], userFirebaseToken: decodedToken["userFirebaseToken"], userImageUrl: decodedToken["userImageUrl"]);
                   AppConfig.userLogin(AppConfig.users, remember);
 
                   print(AppConfig.users.userNickName);

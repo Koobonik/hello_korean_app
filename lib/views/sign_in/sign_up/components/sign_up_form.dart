@@ -6,8 +6,8 @@ import 'package:hellokorean/config/appConfig.dart';
 import 'package:hellokorean/config/size_config.dart';
 import 'package:hellokorean/models/Users.dart';
 import 'package:hellokorean/models/dto/SignUpDto.dart';
-import 'package:hellokorean/utils/firebaseController.dart';
-import 'package:hellokorean/utils/httpcontroller.dart';
+import 'package:hellokorean/config/firebaseController.dart';
+import 'package:hellokorean/config/httpcontroller.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../../config/constants.dart';
@@ -150,13 +150,7 @@ class _SignUpFormState extends State<SignUpForm> {
             DateTime expirationDate = JwtDecoder.getExpirationDate(token);
             print(expirationDate);
             AppConfig.users = Users(
-                token,
-                decodedToken["userNickName"],
-                decodedToken["userFirebaseToken"],
-                decodedToken["userImageUrl"],
-                decodedToken['seeAdTime'],
-                decodedToken['seeAdMoney'],
-                decodedToken['money']);
+                userToken: token, userNickName: decodedToken["userNickName"], userFirebaseToken: decodedToken["userFirebaseToken"], userImageUrl: decodedToken["userImageUrl"]);
             AppConfig.userLogin(AppConfig.users, remember);
             print(AppConfig.users.userNickName);
 //                  Navigator.pushNamed(context, HomeScreen.routeName);
