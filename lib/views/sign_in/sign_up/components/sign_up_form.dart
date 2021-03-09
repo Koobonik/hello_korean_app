@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hellokorean/api/signup/sign_up.dart';
 import 'package:hellokorean/components/custom_surfix_icon.dart';
 import 'package:hellokorean/components/default_button.dart';
 import 'package:hellokorean/components/form_error.dart';
+import 'package:hellokorean/components/util.dart';
 import 'package:hellokorean/config/appConfig.dart';
 import 'package:hellokorean/config/size_config.dart';
 import 'package:hellokorean/models/Users.dart';
@@ -10,6 +12,7 @@ import 'package:hellokorean/models/dto/SignUpDto.dart';
 import 'package:hellokorean/config/firebaseController.dart';
 import 'package:hellokorean/config/httpcontroller.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../../../../config/constants.dart';
 
@@ -49,25 +52,35 @@ class _SignUpFormState extends State<SignUpForm> {
       });
   }
 
-  sendCode(email) {
-    setState(() {
-      SignUp().requestEmailCode(Recipient(email).toMap()).then((value) {
-        print(value);
-        if(value == true){
+  sendCode(email, ProgressDialog pr) {
+    pr.show();
+    SignUp().requestEmailCode(Recipient(email).toMap()).then((value) {
+      print(value);
+      if(value == true){
+        pr.hide();
+        setState(() {
           // 서버에 이메일 보내는 무언가의 요청을 해야함.
           _sendEmailDone = false;
           // 인증코드 입력하는 텍스트 폼이 나와야 함.
 
           // 이메일이
           _otherArea = true;
-        }
-      });
-
-
+        });
+      }
+      else {
+        pr.hide();
+        Get.snackbar("email error!", "We have a problem");
+        return false;
+      }
     });
     return;
   }
 
+  signUp(Map map){
+    SignUp().signUp(map).then((value) {
+      print(value);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -84,8 +97,9 @@ class _SignUpFormState extends State<SignUpForm> {
                                 top: getProportionateScreenHeight(10)),
                             child: DefaultButton(
                               text: "send code",
-                              press: () {
-                                sendCode(email);
+                              press: () async {
+                                ProgressDialog pr = Util.getLoadingProgressDialog(context, "sending email...", false);
+                                sendCode(email, pr);
                               },
                             ),
                           )
@@ -125,40 +139,38 @@ class _SignUpFormState extends State<SignUpForm> {
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
           print("값 유효?" + email);
-          SignUpDto signUpDto = SignUpDto(userId, conformPassword, nickName,
-              email, "FirebaseController.firebaseToken", "hello");
-          String token =
-              await HttpController.sendRequest("signUp", signUpDto.toJson());
-          if (token != "") {
-            Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-            // Now you can use your decoded token
-            print("토큰 이름");
-            print(decodedToken["name"]);
-
-            print(decodedToken["sub"]); // 유저 이름
-            print(decodedToken["HEADER"]);
-            /* isExpired() - you can use this method to know if your token is already expired or not.
-  An useful method when you have to handle sessions and you want the user
-  to authenticate if has an expired token */
-            bool isTokenExpired = JwtDecoder.isExpired(token);
-
-            if (!isTokenExpired) {
-              // The user should authenticate
-              print("토근 유효함");
-            }
-
-            /* getExpirationDate() - this method returns the expiration date of the token */
-            DateTime expirationDate = JwtDecoder.getExpirationDate(token);
-            print(expirationDate);
-            AppConfig.users = Users(
-                userToken: token,
-                userNickName: decodedToken["userNickName"],
-                userFirebaseToken: decodedToken["userFirebaseToken"],
-                userImageUrl: decodedToken["userImageUrl"]);
-            AppConfig.userLogin(AppConfig.users, remember);
-            print(AppConfig.users.userNickName);
-//                  Navigator.pushNamed(context, HomeScreen.routeName);
-          }
+          SignUpDto signUpDto = SignUpDto(userEmail: email, emailCode:receivedCode, password: conformPassword,nickName: nickName, firebaseToken: "FirebaseController.firebaseToken");
+          signUp(signUpDto.toMap());
+//           if (token != "") {
+//             Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+//             // Now you can use your decoded token
+//             print("토큰 이름");
+//             print(decodedToken["name"]);
+//
+//             print(decodedToken["sub"]); // 유저 이름
+//             print(decodedToken["HEADER"]);
+//             /* isExpired() - you can use this method to know if your token is already expired or not.
+//   An useful method when you have to handle sessions and you want the user
+//   to authenticate if has an expired token */
+//             bool isTokenExpired = JwtDecoder.isExpired(token);
+//
+//             if (!isTokenExpired) {
+//               // The user should authenticate
+//               print("토근 유효함");
+//             }
+//
+//             /* getExpirationDate() - this method returns the expiration date of the token */
+//             DateTime expirationDate = JwtDecoder.getExpirationDate(token);
+//             print(expirationDate);
+//             AppConfig.users = Users(
+//                 userToken: token,
+//                 userNickName: decodedToken["userNickName"],
+//                 userFirebaseToken: decodedToken["userFirebaseToken"],
+//                 userImageUrl: decodedToken["userImageUrl"]);
+//             AppConfig.userLogin(AppConfig.users, remember);
+//             print(AppConfig.users.userNickName);
+// //                  Navigator.pushNamed(context, HomeScreen.routeName);
+//           }
 
           // if all are valid then go to success screen
 
@@ -219,7 +231,7 @@ class _SignUpFormState extends State<SignUpForm> {
   TextFormField buildEmailAuthCodeFormField() {
     return TextFormField(
       keyboardType: TextInputType.text,
-      onSaved: (newValue) => nickName = newValue,
+      onSaved: (newValue) => receivedCode = newValue,
       onChanged: (value) {
         if (value.length >= 6) {
           removeError(error: kEmailCodeError);

@@ -29,7 +29,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons:
   provider: ^4.3.2
-  progress_dialog:
   toast:
   shared_preferences: ^0.5.12+4
   jwt_decoder: ^1.0.3
@@ -40,6 +39,7 @@ dependencies:
 #  firebase_storage: ^2.1.0+1
   get: ^3.24.0
   validated: ^1.0.3
+  progress_dialog: ^1.2.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
