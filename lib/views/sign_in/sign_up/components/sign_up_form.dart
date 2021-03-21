@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hellokorean/api/signup/sign_up.dart';
@@ -54,10 +57,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   sendCode(email, ProgressDialog pr) {
     pr.show();
-    SignUp().requestEmailCode(Recipient(email).toMap()).then((value) {
-      print(value);
+    SignUp().requestEmailCode(Recipient(email).toMap()).then((value) async {
+      pr.hide();
       if(value == true){
-        pr.hide();
         setState(() {
           // 서버에 이메일 보내는 무언가의 요청을 해야함.
           _sendEmailDone = false;
@@ -69,7 +71,9 @@ class _SignUpFormState extends State<SignUpForm> {
       }
       else {
         pr.hide();
-        Get.snackbar("email error!", "We have a problem");
+        print('무엇이 문제인고 $value');
+        // DefaultResponse defaultResponse = DefaultResponse.fromMap(value);
+        Get.snackbar("email error!", value.message);
         return false;
       }
     });
@@ -98,7 +102,7 @@ class _SignUpFormState extends State<SignUpForm> {
                             child: DefaultButton(
                               text: "send code",
                               press: () async {
-                                ProgressDialog pr = Util.getLoadingProgressDialog(context, "sending email...", false);
+                                ProgressDialog pr = Util.getLoadingProgressDialog(context, "sending email...", true);
                                 sendCode(email, pr);
                               },
                             ),

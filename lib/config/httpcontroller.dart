@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:get/get.dart';
 import 'appConfig.dart';
 
 
-
 class HttpController {
-  static sendRequest(String url, Map map) async{
+  static sendRequestPost(String url, Map map) async{
+
     HttpClient client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
     //String url ='https://cafecostes.com/flutter/saveShopping';
@@ -19,9 +19,17 @@ class HttpController {
     request.add(utf8.encode(json.encode(map)));
     print("map : " + map.toString());
     HttpClientResponse response = await request.close();
-    String reply = await response.transform(utf8.decoder).join();
+    print("response code -> ${response.statusCode}");
+    final reply = await response.transform(utf8.decoder).join();
     print(reply);
-    return response;
+    if(response.statusCode == 409){
+      print("정상반환 되나?");
+      DefaultResponse defaultResponse = DefaultResponse.fromMap(jsonDecode(reply));
+      Get.snackbar("HelloKorean", '${defaultResponse.message}');
+      throw DefaultResponse.fromMap(reply);
+      // return null;
+    }
+    return reply;
     // if(response.statusCode == 200){
     //   reply = await response.transform(utf8.decoder).join();
     //   print("Response : " + reply);
@@ -45,19 +53,14 @@ class DefaultResponse {
 
   DefaultResponse({this.code, this.message});
 
-  Map<String, dynamic> toMap() {
-    return {'code': code, 'message': message,};
-  }
-
   factory DefaultResponse.fromMap(dynamic map) {
     if (null == map) return null;
     var temp;
     return DefaultResponse(
-      code: null == (temp = map['code']) ? null : (temp is num
-          ? temp.toInt()
-          : int.tryParse(temp)),
+      code: null == (temp = map['code'])
+          ? null
+          : (temp is num ? temp.toInt() : int.tryParse(temp)),
       message: map['message']?.toString(),
     );
   }
-
 }

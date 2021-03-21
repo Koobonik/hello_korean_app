@@ -115,7 +115,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 var map = jsonEncode(users.toMap());
                 Map map2 = {"map" : map.toString()};
                 Map map3 = jsonDecode(map2['map']);
-                String response = await HttpController.sendRequest("/resetPassword", map3);
+                String response = await HttpController.sendRequestPost("/resetPassword", map3);
                 print(response);
                 if(response == "true"){
                   pr.hide();
@@ -138,7 +138,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 Future<List<dynamic>> fetch() async {
   var list = List<dynamic>();
-  var response = await HttpController.sendRequest("/login", null);
+  var response = await HttpController.sendRequestPost("/login", null);
   var body = json.decode(response);
   print(body.length);
   for(var h in body){

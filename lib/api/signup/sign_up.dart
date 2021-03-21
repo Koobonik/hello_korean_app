@@ -6,15 +6,16 @@ import 'package:hellokorean/config/httpcontroller.dart';
 
 class SignUp {
   
-  Future<bool> requestEmailCode(Map map) async {
-    HttpClientResponse response = await HttpController.sendRequest("api/v1/sendEmailForAuthEmail", map);
+  Future<dynamic> requestEmailCode(Map map) async {
+    dynamic response = await HttpController.sendRequestPost("api/v1/sendEmailForAuthEmail", map);
     if(response.statusCode == 200)
       return true;
-    return false;
+    return response;
+    // return response;
   }
 
   Future<bool> signUp(Map map) async {
-    HttpClientResponse response = await HttpController.sendRequest("api/v1/signUp", map);
+    HttpClientResponse response = await HttpController.sendRequestPost("api/v1/signUp", map);
     if(response.statusCode == 200) {
       return true;
     }

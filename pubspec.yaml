@@ -40,6 +40,7 @@ dependencies:
   get: ^3.24.0
   validated: ^1.0.3
   progress_dialog: ^1.2.4
+  http:
 dev_dependencies:
   flutter_test:
     sdk: flutter

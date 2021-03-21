@@ -35,18 +35,18 @@ class Users {
   }
 
   static usersAutoLogin(Users users) async {
-    Users users1 = Users.fromMap(jsonDecode(await HttpController.sendRequest("/autoLogin", users.toMap())));
+    Users users1 = Users.fromMap(jsonDecode(await HttpController.sendRequestPost("/autoLogin", users.toMap())));
     return users1;
   }
 
   static stopUser(Users users) async {
-    String response = await HttpController.sendRequest("/stopUser", users.toMap());
+    String response = await HttpController.sendRequestPost("/stopUser", users.toMap());
     return response;
   }
 }
 Future<List<Users>> getUsersList(Users users) async {
   var list = List<Users>();
-  List<dynamic> body = json.decode(await HttpController.sendRequest("/getUsersList", users.toMap()));
+  List<dynamic> body = json.decode(await HttpController.sendRequestPost("/getUsersList", users.toMap()));
   print(body.length);
   for(var h in body){
     list.add(Users.fromMap(h));
@@ -56,7 +56,7 @@ Future<List<Users>> getUsersList(Users users) async {
 
 
 Future<Users> getUserData() async {
-  String token = await HttpController.sendRequest("renewalToken", null);
+  String token = await HttpController.sendRequestPost("renewalToken", null);
   if (token != "") {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     // Now you can use your decoded token

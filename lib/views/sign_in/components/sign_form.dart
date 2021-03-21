@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/snackbar/snack.dart';
@@ -10,6 +12,7 @@ import 'package:hellokorean/config/constants.dart';
 import 'package:hellokorean/config/size_config.dart';
 import 'package:hellokorean/models/Users.dart';
 import 'package:hellokorean/config/httpcontroller.dart';
+import 'package:hellokorean/models/dto/request/loginDto.dart';
 import 'package:hellokorean/views/forgot_password/forgot_password_screen.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -99,14 +102,13 @@ class _SignFormState extends State<SignForm> {
             press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                Map map = {"userLoginId": Id, "userLoginPassword": password};
-                String token = await HttpController.sendRequest("login", map);
-                // if all are valid then go to success screen
+
+                dynamic response = await HttpController.sendRequestPost("api/v1/login", LoginDto(userEmail: Id,  userPassword: password).toMap());
                 /* token을 받아와서 null이면 기존화면 null이 아니면 로그인성공*/
                 // print("token :"+token+"aaa");
                 // print(token != null);
-                if (token != "") {
-                  Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+                if (response != "") {
+                  Map<String, dynamic> decodedToken = JwtDecoder.decode(jsonDecode(response)['jwt']);
                   // Now you can use your decoded token
                   print("토큰 이름");
                   print(decodedToken["name"]);
@@ -116,7 +118,7 @@ class _SignFormState extends State<SignForm> {
                   /* isExpired() - you can use this method to know if your token is already expired or not.
   An useful method when you have to handle sessions and you want the user
   to authenticate if has an expired token */
-                  bool isTokenExpired = JwtDecoder.isExpired(token);
+                  bool isTokenExpired = JwtDecoder.isExpired(response);
 
                   if (!isTokenExpired) {
                     // The user should authenticate
@@ -124,23 +126,16 @@ class _SignFormState extends State<SignForm> {
                   }
 
                   /* getExpirationDate() - this method returns the expiration date of the token */
-                  DateTime expirationDate = JwtDecoder.getExpirationDate(token);
+                  DateTime expirationDate = JwtDecoder.getExpirationDate(response);
                   print(expirationDate);
                   AppConfig.users = Users(
-                      userToken: token, userNickName: decodedToken["userNickName"], userFirebaseToken: decodedToken["userFirebaseToken"], userImageUrl: decodedToken["userImageUrl"]);
+                      userToken: response, userNickName: decodedToken["userNickName"], userFirebaseToken: decodedToken["userFirebaseToken"], userImageUrl: decodedToken["userImageUrl"]);
                   AppConfig.userLogin(AppConfig.users, remember);
 
                   print(AppConfig.users.userNickName);
 
 //                  Navigator.pushNamed(context, HomeScreen.routeName);
-                } else {
-                  //아이디와 비밀번호가 일치하지 않을때의 스낵바
-                  final snackBar = SnackBar(
-                    content: Text('아이디 또는 비밀번호가 일치하지 않습니다.'),
-                  );
-                  Scaffold.of(context).showSnackBar(snackBar);
-                  // print("로그인하지 못했습니다.");
-                }
+                } 
               } else
                 print("false");
             },
