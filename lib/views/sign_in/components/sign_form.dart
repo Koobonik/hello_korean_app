@@ -128,7 +128,7 @@ class _SignFormState extends State<SignForm> {
 
 
                   AppConfig.users = Users(
-                      userToken: response.jwt, userNickName: decodedToken["userNickName"], userFirebaseToken: decodedToken["userFirebaseToken"], userImageUrl: decodedToken["userImageUrl"]);
+                      userToken: response.jwt, userNickName: decodedToken["userNickName"], userFirebaseToken: 'fire', userImageUrl: decodedToken["userImageUrl"]);
                   AppConfig.userLogin(AppConfig.users, remember);
 
                   print(AppConfig.users.userNickName);
