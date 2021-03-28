@@ -13,6 +13,7 @@ import 'package:hellokorean/config/size_config.dart';
 import 'package:hellokorean/models/Users.dart';
 import 'package:hellokorean/config/httpcontroller.dart';
 import 'package:hellokorean/models/dto/request/loginDto.dart';
+import 'package:hellokorean/models/dto/response/jwt_response.dart';
 import 'package:hellokorean/views/forgot_password/forgot_password_screen.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -96,39 +97,38 @@ class _SignFormState extends State<SignForm> {
             ],
           ),
           FormError(errors: errors),
+          SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Login",
             press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
 
-                dynamic response = await HttpController.sendRequestPost("api/v1/login", LoginDto(userEmail: Id,  userPassword: password).toMap());
+                JwtResponse response = JwtResponse.fromMap(await HttpController.sendRequestPost("api/v1/login", LoginDto(userEmail: Id,  userPassword: password).toMap()));
                 /* token을 받아와서 null이면 기존화면 null이 아니면 로그인성공*/
                 // print("token :"+token+"aaa");
                 // print(token != null);
                 if (response != "") {
-                  Map<String, dynamic> decodedToken = JwtDecoder.decode(jsonDecode(response)['jwt']);
+                  Map<String, dynamic> decodedToken = JwtDecoder.decode(response.jwt);
                   // Now you can use your decoded token
                   print("토큰 이름");
-                  print(decodedToken["name"]);
 
                   print(decodedToken["sub"]); // 유저 이름
-                  print(decodedToken["HEADER"]);
-                  /* isExpired() - you can use this method to know if your token is already expired or not.
-  An useful method when you have to handle sessions and you want the user
-  to authenticate if has an expired token */
-                  bool isTokenExpired = JwtDecoder.isExpired(response);
+                  bool isTokenExpired = JwtDecoder.isExpired(response.jwt);
 
                   if (!isTokenExpired) {
                     // The user should authenticate
                     print("토근 유효함");
                   }
+                  // 이 토큰
 
                   /* getExpirationDate() - this method returns the expiration date of the token */
-                  DateTime expirationDate = JwtDecoder.getExpirationDate(response);
+                  DateTime expirationDate = JwtDecoder.getExpirationDate(response.jwt);
                   print(expirationDate);
+
+
                   AppConfig.users = Users(
-                      userToken: response, userNickName: decodedToken["userNickName"], userFirebaseToken: decodedToken["userFirebaseToken"], userImageUrl: decodedToken["userImageUrl"]);
+                      userToken: response.jwt, userNickName: decodedToken["userNickName"], userFirebaseToken: decodedToken["userFirebaseToken"], userImageUrl: decodedToken["userImageUrl"]);
                   AppConfig.userLogin(AppConfig.users, remember);
 
                   print(AppConfig.users.userNickName);

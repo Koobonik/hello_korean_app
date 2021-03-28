@@ -23,13 +23,12 @@ class HttpController {
     final reply = await response.transform(utf8.decoder).join();
     print(reply);
     if(response.statusCode == 409){
-      print("정상반환 되나?");
       DefaultResponse defaultResponse = DefaultResponse.fromMap(jsonDecode(reply));
       Get.snackbar("HelloKorean", '${defaultResponse.message}');
       throw DefaultResponse.fromMap(reply);
       // return null;
     }
-    return reply;
+    return jsonDecode(reply);
     // if(response.statusCode == 200){
     //   reply = await response.transform(utf8.decoder).join();
     //   print("Response : " + reply);
