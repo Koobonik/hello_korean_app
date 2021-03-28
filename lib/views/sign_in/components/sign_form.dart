@@ -96,7 +96,6 @@ class _SignFormState extends State<SignForm> {
             ],
           ),
           FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Login",
             press: () async {
