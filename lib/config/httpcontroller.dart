@@ -5,17 +5,17 @@ import 'appConfig.dart';
 
 
 class HttpController {
-  static sendRequestPost(String url, Map map) async{
 
+  static sendRequestPost(String url, Map map) async{
     HttpClient client = new HttpClient();
     client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
     //String url ='https://cafecostes.com/flutter/saveShopping';
     //Map map = { "userName" : name , "list" : order, "sum_cost" : money, "num" : nums};
     HttpClientRequest request = await client.postUrl(Uri.parse(AppConfig.getHostUrl()+url));
     request.headers.set('content-type', 'application/json');
-    // if(AppConfig.users.userToken != null){
-    //   request.headers.set("JWT", AppConfig.users.userToken);
-    // }
+     if(AppConfig?.users?.userToken != null){
+       request.headers.set("JWT", AppConfig.users.userToken);
+     }
     request.add(utf8.encode(json.encode(map)));
     print("map : " + map.toString());
     HttpClientResponse response = await request.close();
@@ -41,6 +41,29 @@ class HttpController {
     //   return defaultResponse;
     // }
 
+  }
+
+  static sendRequestGet(String url) async{
+    HttpClient client = new HttpClient();
+    client.badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+    //String url ='https://cafecostes.com/flutter/saveShopping';
+    //Map map = { "userName" : name , "list" : order, "sum_cost" : money, "num" : nums};
+    HttpClientRequest request = await client.getUrl(Uri.parse(AppConfig.getHostUrl()+url));
+    request.headers.set('content-type', 'application/json');
+    if(AppConfig?.users?.userToken != null){
+      request.headers.set("JWT", AppConfig.users.userToken);
+    }
+    HttpClientResponse response = await request.close();
+    print("response code -> ${response.statusCode}");
+    final reply = await response.transform(utf8.decoder).join();
+    print(reply);
+    if(response.statusCode == 409){
+      DefaultResponse defaultResponse = DefaultResponse.fromMap(jsonDecode(reply));
+      Get.snackbar("HelloKorean", '${defaultResponse.message}');
+      throw DefaultResponse.fromMap(reply);
+      // return null;
+    }
+    return jsonDecode(reply);
   }
 
 

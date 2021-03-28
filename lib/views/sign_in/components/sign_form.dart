@@ -14,6 +14,7 @@ import 'package:hellokorean/models/Users.dart';
 import 'package:hellokorean/config/httpcontroller.dart';
 import 'package:hellokorean/models/dto/request/loginDto.dart';
 import 'package:hellokorean/models/dto/response/jwt_response.dart';
+import 'package:hellokorean/models/dto/response/profile_response.dart';
 import 'package:hellokorean/views/forgot_password/forgot_password_screen.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -126,15 +127,18 @@ class _SignFormState extends State<SignForm> {
                   DateTime expirationDate = JwtDecoder.getExpirationDate(response.jwt);
                   print(expirationDate);
 
+                  AppConfig.users.userToken = response.jwt;
 
+                 Profile profile = Profile.fromMap(await HttpController.sendRequestGet('api/v1/getProfile'));
+                  print(profile.toString());
                   AppConfig.users = Users(
-                      userToken: response.jwt, userNickName: decodedToken["userNickName"], userFirebaseToken: 'fire', userImageUrl: decodedToken["userImageUrl"]);
+                      userToken: response.jwt, userNickName: profile.userNickname, userFirebaseToken: 'fire', userImageUrl: profile.imagUrl ?? '');
                   AppConfig.userLogin(AppConfig.users, remember);
 
                   print(AppConfig.users.userNickName);
 
 //                  Navigator.pushNamed(context, HomeScreen.routeName);
-                } 
+                }
               } else
                 print("false");
             },

@@ -8,7 +8,7 @@ class AppConfig {
   static Color buttonColor = Colors.blue;
   static bool userLogined = false; // 유저가 로그인 했는지!
   static bool prAppear = true; // 광고 나타낼지 말지
-  static Users users = null;
+  static Users users = Users();
   static String releaseHost = 'https://donda.shop:8084/';
   static String debugHost = 'https://donda.shop:8084/';
 //  static String baseUrl = "https://192.168.219.100:8080/api/v1";
