@@ -106,14 +106,10 @@ class _SignFormState extends State<SignForm> {
                 _formKey.currentState.save();
 
                 JwtResponse response = JwtResponse.fromMap(await HttpController.sendRequestPost("api/v1/login", LoginDto(userEmail: Id,  userPassword: password).toMap()));
-                /* token을 받아와서 null이면 기존화면 null이 아니면 로그인성공*/
-                // print("token :"+token+"aaa");
-                // print(token != null);
-                if (response != "") {
+                if (response != null) {
                   Map<String, dynamic> decodedToken = JwtDecoder.decode(response.jwt);
                   // Now you can use your decoded token
                   print("토큰 이름");
-
                   print(decodedToken["sub"]); // 유저 이름
                   bool isTokenExpired = JwtDecoder.isExpired(response.jwt);
 

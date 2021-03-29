@@ -60,7 +60,7 @@ class HttpController {
     if(response.statusCode == 409){
       DefaultResponse defaultResponse = DefaultResponse.fromMap(jsonDecode(reply));
       Get.snackbar("HelloKorean", '${defaultResponse.message}');
-      throw DefaultResponse.fromMap(reply);
+      throw DefaultResponse.fromMap(jsonDecode(reply));
       // return null;
     }
     return jsonDecode(reply);
