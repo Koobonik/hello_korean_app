@@ -41,6 +41,7 @@ dependencies:
   validated: ^1.0.3
   progress_dialog: ^1.2.4
   http:
+  salomon_bottom_bar: ^3.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

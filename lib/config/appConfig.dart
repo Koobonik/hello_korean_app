@@ -10,7 +10,8 @@ class AppConfig {
   static bool prAppear = true; // 광고 나타낼지 말지
   static Users users = Users();
   static String releaseHost = 'https://donda.shop:8084/';
-  static String debugHost = 'https://192.168.219.100:8084/';
+  // static String debugHost = 'https://192.168.219.100:8084/';
+  static String debugHost = 'https://192.168.219.105:8084/';
 //  static String baseUrl = "https://192.168.219.100:8080/api/v1";
 
   bool adminTestMode = false;
