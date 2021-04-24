@@ -16,6 +16,7 @@ import 'package:hellokorean/models/dto/request/loginDto.dart';
 import 'package:hellokorean/models/dto/response/jwt_response.dart';
 import 'package:hellokorean/models/dto/response/profile_response.dart';
 import 'package:hellokorean/views/forgot_password/forgot_password_screen.dart';
+import 'package:hellokorean/views/home/main_page.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class SignForm extends StatefulWidget {
@@ -132,7 +133,7 @@ class _SignFormState extends State<SignForm> {
                   AppConfig.userLogin(AppConfig.users, remember);
 
                   print(AppConfig.users.userNickName);
-
+                  Get.offAll(MainPage());
 //                  Navigator.pushNamed(context, HomeScreen.routeName);
                 }
               } else

@@ -57,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       userLogined = value;
       if (userLogined) {
         // Get.to(SignInScreen());
+        print("유저 자동 로그인");
         Get.offAll(MainPage());
       } else {
         Get.to(SignInScreen());
@@ -87,7 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 "Provider.of<Users>(context).id.toString()",
                 style: Theme.of(context).textTheme.headline4,
               ),
-              RaisedButton(child: Text("hihi"), onPressed: () {})
             ],
           ),
         ),

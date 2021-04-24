@@ -11,7 +11,7 @@ class AppConfig {
   static Users users = Users();
   static String releaseHost = 'https://donda.shop:8084/';
   // static String debugHost = 'https://192.168.219.100:8084/';
-  static String debugHost = 'https://192.168.219.105:8084/';
+  static String debugHost = 'https://125.186.202.51:8084/';
 //  static String baseUrl = "https://192.168.219.100:8080/api/v1";
 
   bool adminTestMode = false;

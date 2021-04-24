@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class MColors {
   static const red =  Colors.red;
+  static const blue = Colors.blueAccent;
   static const tomato = const Color(0xfff43630);
   static const warm_grey = const Color(0xff999696);
   static const warm_grey08 = Color.fromRGBO(153, 150, 150, 0.8);
