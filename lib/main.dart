@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
+      // showSemanticsDebugger: false,
+      // debugShowMaterialGrid: false,
       home: AppConfig.userLogined
           ? MainPage()
           : SignInScreen(),

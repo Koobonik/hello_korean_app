@@ -7,6 +7,7 @@ import 'package:get/get_navigation/src/snackbar/snack.dart';
 import 'package:hellokorean/components/custom_surfix_icon.dart';
 import 'package:hellokorean/components/default_button.dart';
 import 'package:hellokorean/components/form_error.dart';
+import 'package:hellokorean/components/util.dart';
 import 'package:hellokorean/config/appConfig.dart';
 import 'package:hellokorean/config/constants.dart';
 import 'package:hellokorean/config/size_config.dart';
@@ -131,7 +132,8 @@ class _SignFormState extends State<SignForm> {
                   AppConfig.users = Users(
                       userToken: response.jwt, userNickName: profile.userNickname, userFirebaseToken: 'fire', userImageUrl: profile.imagUrl ?? '');
                   AppConfig.userLogin(AppConfig.users, remember);
-
+                  await Util.setSharedBool("userLogined", true);
+                  print(await Util.getSharedBool("userLogined"));
                   print(AppConfig.users.userNickName);
                   Get.offAll(MainPage());
 //                  Navigator.pushNamed(context, HomeScreen.routeName);
