@@ -10,15 +10,19 @@ import 'package:hellokorean/config/size_config.dart';
 import 'package:hellokorean/views/home/main_page.dart';
 import 'package:hellokorean/views/sign_in/sign_in_screen.dart';
 
-void main() async {
-  runApp(MyApp());
-  Util.getSharedBool("userLogined").then((value) {
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+   Util.getSharedBool("userLogined").then((value) {
     AppConfig.userLogined = value;
+    runApp(MyApp(value));
   });
+
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  bool userLogined;
+
+  MyApp(this.userLogined); // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

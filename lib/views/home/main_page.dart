@@ -33,7 +33,7 @@ class _MainPageState extends State<MainPage> {
           title: Text("Hello Korean"),
         ),
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight - SizeConfig.safeAreaBottom),
+          padding: EdgeInsets.only(bottom : SizeConfig.safeAreaBottom ?? 0),
           child: SalomonBottomBar(
             currentIndex: _currentIndex,
             onTap: (i) => setState(() => _currentIndex = i),
